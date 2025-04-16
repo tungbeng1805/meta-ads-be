@@ -1,17 +1,9 @@
 const db = require("../../common/connect.js");
-const { returnResponse, capitalizeFirstLetter, convertData } = require("../../utils/index.js");
+const { returnResponse } = require("../../utils/index.js");
 
 const getList = async (req, res) => {
   try {
-    const { business_id } = req.query;
-    if (!business_id) {
-      db.query("SELECT * FROM campaigns", (err, results) => {
-        if (err) return returnResponse(res, 500, { err });
-        return returnResponse(res, 200, { data: results });
-      });
-    }
-
-    db.query("SELECT * FROM campaigns WHERE business_id = ?", [business_id], (err, results) => {
+    db.query("SELECT * FROM ads", (err, results) => {
       if (err) return returnResponse(res, 500, { err });
       return returnResponse(res, 200, { data: results });
     });
@@ -22,7 +14,7 @@ const getList = async (req, res) => {
 
 const getDetail = async (req, res) => {
   try {
-    db.query("SELECT * FROM campaigns WHERE id = ?", [req.params.id], (err, results) => {
+    db.query("SELECT * FROM ads WHERE id = ?", [req.params.id], (err, results) => {
       if (err) return returnResponse(res, 400, { err });
       return returnResponse(res, 200, { data: results[0] });
     });
@@ -31,11 +23,10 @@ const getDetail = async (req, res) => {
   }
 };
 
-const createCampaigns = async (req, res) => {
+const createAds = async (req, res) => {
   try {
     const data = req.body;
-    const obj = convertData(req.body);
-    db.query("INSERT INTO campaigns SET ?", obj, (err, results) => {
+    db.query("INSERT INTO ads SET ?", data, (err, results) => {
       if (err) return returnResponse(res, 400, { err });
       return returnResponse(res, 200, { data: { id: results.insertId, ...data } });
     });
@@ -44,11 +35,10 @@ const createCampaigns = async (req, res) => {
   }
 };
 
-const updateCampaigns = async (req, res) => {
+const updateAds = async (req, res) => {
   try {
     const data = req.body;
-    const obj = convertData(req.body);
-    db.query("UPDATE campaigns SET ? WHERE id = ?", [obj, req.params.id], (err, results) => {
+    db.query("UPDATE ads SET ? WHERE id = ?", [data, req.params.id], (err, results) => {
       if (err) return returnResponse(res, 400, { err });
       return returnResponse(res, 200, { data: { id: results.insertId, ...data } });
     });
@@ -57,9 +47,9 @@ const updateCampaigns = async (req, res) => {
   }
 };
 
-const deleteCampaigns = async (req, res) => {
+const deleteAds = async (req, res) => {
   try {
-    db.query("DELETE FROM campaigns WHERE id = ?", [req.params.id], (err) => {
+    db.query("DELETE FROM ads WHERE id = ?", [req.params.id], (err) => {
       if (err) return returnResponse(res, 400, { err });
       return returnResponse(res, 200, { message: "Deleted successfully" });
     });
@@ -71,7 +61,7 @@ const deleteCampaigns = async (req, res) => {
 module.exports = {
   getList,
   getDetail,
-  createCampaigns,
-  updateCampaigns,
-  deleteCampaigns,
+  createAds,
+  updateAds,
+  deleteAds,
 };

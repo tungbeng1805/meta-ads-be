@@ -3,6 +3,7 @@ const dotenv = require("dotenv");
 const cors = require("cors");
 const businessRouter = require("./app/router/buiness.js");
 const AdSetsRouter = require("./app/router/ad_sets.js");
+const AdsRouter = require("./app/router/ads.js");
 const CampaignsRouter = require("./app/router/campaigns.js");
 
 const app = express();
@@ -16,6 +17,7 @@ app.get("", (req, res) => {
 
 app.use("/api/business", businessRouter);
 app.use("/api/ad_sets", AdSetsRouter);
+app.use("/api/ads", AdsRouter);
 app.use("/api/campaigns", CampaignsRouter);
 
 // const port = process.env.PORT || 3000;

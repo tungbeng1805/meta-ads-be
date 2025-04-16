@@ -3,6 +3,25 @@ const { returnResponse } = require("../../utils/index.js");
 
 const getList = async (req, res) => {
   try {
+    const { business_id, campaign_id } = req.query;
+    if (business_id) {
+      db.query(
+        "SELECT ad_sets.* FROM ad_sets JOIN campaigns ON ad_sets.campaign_id = campaigns.id WHERE campaigns.business_id = ?",
+        [business_id],
+        (err, results) => {
+          if (err) return returnResponse(res, 500, { err });
+          return returnResponse(res, 200, { data: results });
+        }
+      );
+      return;
+    }
+    if (campaign_id) {
+      db.query("SELECT * FROM ad_sets WHERE campaign_id = ?", [campaign_id], (err, results) => {
+        if (err) return returnResponse(res, 500, { err });
+        return returnResponse(res, 200, { data: results });
+      });
+      return;
+    }
     db.query("SELECT * FROM ad_sets", (err, results) => {
       if (err) return returnResponse(res, 500, { err });
       return returnResponse(res, 200, { data: results });

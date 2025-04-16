@@ -1,5 +1,5 @@
 const db = require("../../common/connect.js");
-const { returnResponse, capitalizeFirstLetter, convertData } = require("../../utils/index.js");
+const { returnResponse, convertData } = require("../../utils/index.js");
 
 const getList = async (req, res) => {
   try {
@@ -9,6 +9,7 @@ const getList = async (req, res) => {
         if (err) return returnResponse(res, 500, { err });
         return returnResponse(res, 200, { data: results });
       });
+      return;
     }
 
     db.query("SELECT * FROM campaigns WHERE business_id = ?", [business_id], (err, results) => {

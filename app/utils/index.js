@@ -19,7 +19,7 @@ const capitalizeFirstLetter = (string) => {
 const convertData = (data) => {
   const obj = {};
   Object.keys(data).forEach((item) => {
-    if (typeof data[item] === "object") {
+    if (typeof data[item] === "object" && !!data[item]) {
       Object.keys(data[item]).forEach((_item) => {
         obj[`${item}${capitalizeFirstLetter(_item)}`] = data[item][_item];
       });

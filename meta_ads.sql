@@ -1,11 +1,11 @@
 -- phpMyAdmin SQL Dump
--- version 5.2.0
+-- version 5.2.1
 -- https://www.phpmyadmin.net/
 --
 -- Máy chủ: 127.0.0.1
--- Thời gian đã tạo: Th4 14, 2025 lúc 01:01 PM
--- Phiên bản máy phục vụ: 10.4.24-MariaDB
--- Phiên bản PHP: 7.4.29
+-- Thời gian đã tạo: Th4 16, 2025 lúc 08:44 PM
+-- Phiên bản máy phục vụ: 10.4.28-MariaDB
+-- Phiên bản PHP: 8.0.28
 
 SET SQL_MODE = "NO_AUTO_VALUE_ON_ZERO";
 START TRANSACTION;
@@ -54,7 +54,7 @@ CREATE TABLE `ads` (
   `amountSpent` varchar(255) DEFAULT NULL,
   `endsOngoing` tinyint(1) NOT NULL,
   `endsDate` date DEFAULT NULL
-) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4;
+) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_general_ci;
 
 -- --------------------------------------------------------
 
@@ -84,7 +84,7 @@ CREATE TABLE `ad_sets` (
   `endsDate` date DEFAULT NULL,
   `scheduleFrom` date DEFAULT NULL,
   `scheduleTo` date DEFAULT NULL
-) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4;
+) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_general_ci;
 
 -- --------------------------------------------------------
 
@@ -101,14 +101,14 @@ CREATE TABLE `business` (
   `amountSpent` varchar(255) NOT NULL,
   `attributionSetting` varchar(255) NOT NULL,
   `messaginConversationStarted` varchar(255) NOT NULL,
-  `CostPerMessagingConversationStarted` varchar(255) NOT NULL
-) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4;
+  `costPerMessagingConversationStarted` varchar(255) NOT NULL
+) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_general_ci;
 
 --
 -- Đang đổ dữ liệu cho bảng `business`
 --
 
-INSERT INTO `business` (`id`, `accountName`, `reach`, `impressions`, `frequency`, `amountSpent`, `attributionSetting`, `messaginConversationStarted`, `CostPerMessagingConversationStarted`) VALUES
+INSERT INTO `business` (`id`, `accountName`, `reach`, `impressions`, `frequency`, `amountSpent`, `attributionSetting`, `messaginConversationStarted`, `costPerMessagingConversationStarted`) VALUES
 (2, 'Test', '100', '4500', '1.5', '150000', 'Multiple attribution settings', '95', '16000');
 
 -- --------------------------------------------------------
@@ -123,7 +123,7 @@ CREATE TABLE `campaigns` (
   `campaign` varchar(255) NOT NULL,
   `deliveryStatus` enum('Active','Off') NOT NULL,
   `deliveryDescription` text DEFAULT NULL,
-  `bidStrategy` enum('highest volume','Using ad set bid strategy') NOT NULL,
+  `bidStrategy` enum('Highest volume','Using ad set bid strategy') NOT NULL,
   `budgetCost` varchar(255) DEFAULT NULL,
   `budgetDescription` text DEFAULT NULL,
   `attributionSetting` varchar(255) DEFAULT NULL,
@@ -137,17 +137,17 @@ CREATE TABLE `campaigns` (
   `endsOngoing` tinyint(1) NOT NULL,
   `endsDate` date DEFAULT NULL,
   `business_id` int(11) NOT NULL
-) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4;
+) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_general_ci;
 
 --
 -- Đang đổ dữ liệu cho bảng `campaigns`
 --
 
 INSERT INTO `campaigns` (`id`, `status`, `campaign`, `deliveryStatus`, `deliveryDescription`, `bidStrategy`, `budgetCost`, `budgetDescription`, `attributionSetting`, `resultsCost`, `resultsDescription`, `reach`, `impressions`, `costPerResultCost`, `costPerResultDescription`, `amountSpent`, `endsOngoing`, `endsDate`, `business_id`) VALUES
-(1, 1, 'Campaigns test', 'Active', '1 recommendation', 'highest volume', '150000', 'Daily', '7-day click or 1-day view', '22', 'Messaging conversations started', '5000', '11000', '16000', 'Per post engagement', '300000', 1, NULL, 2),
-(2, 0, 'Campaigns test1', 'Active', '1 recommendation', 'highest volume', '150000', 'Daily', '7-day click or 1-day view', '22', 'Messaging conversations started', '5000', '11000', '16000', 'Per post engagement', '300000', 0, NULL, 2),
-(3, 0, 'Campaigns test1', 'Active', '1 recommendation', 'highest volume', '150000', 'Daily', '7-day click or 1-day view', '22', 'Messaging conversations started', '5000', '11000', '16000', 'Per post engagement', '300000', 0, NULL, 2),
-(4, 0, 'Campaigns test1', 'Active', '1 recommendation', 'highest volume', '150000', 'Daily', '7-day click or 1-day view', '22', 'Messaging conversations started', '5000', '11000', '16000', 'Per post engagement', '300000', 0, '2025-04-13', 2);
+(1, 1, 'Campaigns test', 'Active', '1 recommendation', 'Highest volume', '150000', 'Daily', '7-day click or 1-day view', '22', 'Messaging conversations started', '5000', '11000', '16000', 'Per post engagement', '300000', 1, NULL, 2),
+(2, 0, 'Campaigns test1', 'Active', '1 recommendation', 'Highest volume', '150000', 'Daily', '7-day click or 1-day view', '22', 'Messaging conversations started', '5000', '11000', '16000', 'Per post engagement', '300000', 0, NULL, 2),
+(3, 0, 'Campaigns test1', 'Active', '1 recommendation', 'Highest volume', '150000', 'Daily', '7-day click or 1-day view', '22', 'Messaging conversations started', '5000', '11000', '16000', 'Per post engagement', '300000', 0, NULL, 2),
+(4, 0, 'Campaigns test1', 'Active', '1 recommendation', 'Highest volume', '150000', 'Daily', '7-day click or 1-day view', '22', 'Messaging conversations started', '5000', '11000', '16000', 'Per post engagement', '300000', 0, '2025-04-13', 2);
 
 --
 -- Chỉ mục cho các bảng đã đổ
@@ -200,13 +200,13 @@ ALTER TABLE `ad_sets`
 -- AUTO_INCREMENT cho bảng `business`
 --
 ALTER TABLE `business`
-  MODIFY `id` int(10) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=3;
+  MODIFY `id` int(10) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=7;
 
 --
 -- AUTO_INCREMENT cho bảng `campaigns`
 --
 ALTER TABLE `campaigns`
-  MODIFY `id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=5;
+  MODIFY `id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=6;
 
 --
 -- Các ràng buộc cho các bảng đã đổ

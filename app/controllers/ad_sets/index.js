@@ -3,10 +3,21 @@ const { returnResponse } = require("../../utils/index.js");
 
 const getList = async (req, res) => {
   try {
-    const { business_id, campaign_id } = req.query;
-    if (business_id) {
+    const business_id = req.query.business_id
+      ?.split(",")
+      .map((id) => parseInt(id))
+      .filter(Boolean);
+    const campaign_id = req.query.campaign_id
+      ?.split(",")
+      .map((id) => parseInt(id))
+      .filter(Boolean);
+
+    if (business_id?.length) {
       db.query(
-        "SELECT ad_sets.* FROM ad_sets JOIN campaigns ON ad_sets.campaign_id = campaigns.id WHERE campaigns.business_id = ?",
+        `SELECT ad_sets.* 
+         FROM ad_sets 
+         JOIN campaigns ON ad_sets.campaign_id = campaigns.id 
+         WHERE campaigns.business_id IN (?)`,
         [business_id],
         (err, results) => {
           if (err) return returnResponse(res, 500, { err });
@@ -15,17 +26,20 @@ const getList = async (req, res) => {
       );
       return;
     }
-    if (campaign_id) {
-      db.query("SELECT * FROM ad_sets WHERE campaign_id = ?", [campaign_id], (err, results) => {
+
+    if (campaign_id?.length) {
+      db.query(`SELECT * FROM ad_sets WHERE campaign_id IN (?)`, [campaign_id], (err, results) => {
         if (err) return returnResponse(res, 500, { err });
         return returnResponse(res, 200, { data: results });
       });
       return;
     }
+
     db.query("SELECT * FROM ad_sets", (err, results) => {
       if (err) return returnResponse(res, 500, { err });
       return returnResponse(res, 200, { data: results });
     });
+    return;
   } catch (error) {
     return returnResponse(res, 500, { error });
   }

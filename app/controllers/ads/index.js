@@ -2,11 +2,18 @@ const db = require("../../common/connect.js");
 const { returnResponse } = require("../../utils/index.js");
 
 const getList = async (req, res) => {
-  const { business_id, campaign_id, ad_set_id } = req.query;
   try {
-    if (business_id) {
+    const business_id = req.query.business_id?.split(",").map(Number).filter(Boolean);
+    const campaign_id = req.query.campaign_id?.split(",").map(Number).filter(Boolean);
+    const ad_set_id = req.query.ad_set_id?.split(",").map(Number).filter(Boolean);
+
+    if (business_id?.length) {
       db.query(
-        "SELECT ads.* FROM ads JOIN ad_sets ON ads.ad_set_id = ad_sets.id JOIN campaigns ON ad_sets.campaign_id = campaigns.id WHERE campaigns.business_id = ?",
+        `SELECT ads.* 
+         FROM ads 
+         JOIN ad_sets ON ads.ad_set_id = ad_sets.id 
+         JOIN campaigns ON ad_sets.campaign_id = campaigns.id 
+         WHERE campaigns.business_id IN (?)`,
         [business_id],
         (err, results) => {
           if (err) return returnResponse(res, 500, { err });
@@ -15,9 +22,13 @@ const getList = async (req, res) => {
       );
       return;
     }
-    if (campaign_id) {
+
+    if (campaign_id?.length) {
       db.query(
-        "SELECT ads.* FROM ads JOIN ad_sets ON ads.ad_set_id = ad_sets.id WHERE ad_sets.campaign_id = ?",
+        `SELECT ads.* 
+         FROM ads 
+         JOIN ad_sets ON ads.ad_set_id = ad_sets.id 
+         WHERE ad_sets.campaign_id IN (?)`,
         [campaign_id],
         (err, results) => {
           if (err) return returnResponse(res, 500, { err });
@@ -26,13 +37,15 @@ const getList = async (req, res) => {
       );
       return;
     }
-    if (ad_set_id) {
-      db.query("SELECT * FROM ads WHERE ad_set_id = ?", [ad_set_id], (err, results) => {
+
+    if (ad_set_id?.length) {
+      db.query(`SELECT * FROM ads WHERE ad_set_id IN (?)`, [ad_set_id], (err, results) => {
         if (err) return returnResponse(res, 500, { err });
         return returnResponse(res, 200, { data: results });
       });
       return;
     }
+
     db.query("SELECT * FROM ads", (err, results) => {
       if (err) return returnResponse(res, 500, { err });
       return returnResponse(res, 200, { data: results });

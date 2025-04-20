@@ -8,6 +8,7 @@ const AdsRouter = require("./app/router/ads.js");
 const CampaignsRouter = require("./app/router/campaigns.js");
 const FormFaceRouter = require("./app/router/form_face.js");
 const uploadRouter = require("./app/router/upload.js");
+const chartsRouter = require("./app/router/chart.js");
 
 const app = express();
 dotenv.config();
@@ -25,6 +26,7 @@ app.use("/api/campaigns", CampaignsRouter);
 app.use("/api/upload", uploadRouter);
 app.use("/uploads", express.static(path.join(__dirname, "uploads")));
 app.use("/api/form_face", FormFaceRouter);
+app.use("/api/charts", chartsRouter);
 
 // const port = process.env.PORT || 3000;
 app.listen(3000, () => {

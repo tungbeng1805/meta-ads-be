@@ -12,7 +12,7 @@ const getList = async (req, res) => {
       return;
     }
 
-    db.query("SELECT * FROM campaigns WHERE business_id = ?", [business_id], (err, results) => {
+    db.query("SELECT * FROM campaigns WHERE business_id = ? ORDER BY id DESC", [business_id], (err, results) => {
       if (err) return returnResponse(res, 400, { err });
       return returnResponse(res, 200, { data: results });
     });

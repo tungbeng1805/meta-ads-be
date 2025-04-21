@@ -13,7 +13,7 @@ const getList = async (req, res) => {
          FROM ads 
          JOIN ad_sets ON ads.ad_set_id = ad_sets.id 
          JOIN campaigns ON ad_sets.campaign_id = campaigns.id 
-         WHERE campaigns.business_id IN (?)`,
+         WHERE campaigns.business_id IN (?) ORDER BY id DESC`,
         [business_id],
         (err, results) => {
           if (err) return returnResponse(res, 400, { err });
@@ -28,7 +28,7 @@ const getList = async (req, res) => {
         `SELECT ads.* 
          FROM ads 
          JOIN ad_sets ON ads.ad_set_id = ad_sets.id 
-         WHERE ad_sets.campaign_id IN (?)`,
+         WHERE ad_sets.campaign_id IN (?) ORDER BY id DESC`,
         [campaign_id],
         (err, results) => {
           if (err) return returnResponse(res, 400, { err });
@@ -39,7 +39,7 @@ const getList = async (req, res) => {
     }
 
     if (ad_set_id?.length) {
-      db.query(`SELECT * FROM ads WHERE ad_set_id IN (?)`, [ad_set_id], (err, results) => {
+      db.query(`SELECT * FROM ads WHERE ad_set_id IN (?) ORDER BY id DESC`, [ad_set_id], (err, results) => {
         if (err) return returnResponse(res, 400, { err });
         return returnResponse(res, 200, { data: results });
       });

@@ -3,7 +3,7 @@ const { returnResponse } = require("../../utils/index.js");
 
 const getList = async (req, res) => {
   try {
-    db.query("SELECT * FROM business", (err, results) => {
+    db.query("SELECT * FROM business ORDER BY id DESC", (err, results) => {
       if (err) return returnResponse(res, 400, { err });
       return returnResponse(res, 200, { data: results });
     });

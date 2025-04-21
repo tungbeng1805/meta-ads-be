@@ -46,7 +46,7 @@ const getList = async (req, res) => {
       return;
     }
 
-    db.query("SELECT * FROM ads", (err, results) => {
+    db.query("SELECT * FROM ads ORDER BY id DESC", (err, results) => {
       if (err) return returnResponse(res, 400, { err });
       return returnResponse(res, 200, { data: results });
     });

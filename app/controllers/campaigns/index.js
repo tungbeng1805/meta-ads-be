@@ -5,7 +5,7 @@ const getList = async (req, res) => {
   try {
     const { business_id } = req.query;
     if (!business_id) {
-      db.query("SELECT * FROM campaigns", (err, results) => {
+      db.query("SELECT * FROM campaigns ORDER BY id DESC", (err, results) => {
         if (err) return returnResponse(res, 400, { err });
         return returnResponse(res, 200, { data: results });
       });

@@ -16,7 +16,7 @@ const getList = async (req, res) => {
          WHERE campaigns.business_id IN (?)`,
         [business_id],
         (err, results) => {
-          if (err) return returnResponse(res, 500, { err });
+          if (err) return returnResponse(res, 400, { err });
           return returnResponse(res, 200, { data: results });
         }
       );
@@ -31,7 +31,7 @@ const getList = async (req, res) => {
          WHERE ad_sets.campaign_id IN (?)`,
         [campaign_id],
         (err, results) => {
-          if (err) return returnResponse(res, 500, { err });
+          if (err) return returnResponse(res, 400, { err });
           return returnResponse(res, 200, { data: results });
         }
       );
@@ -40,14 +40,14 @@ const getList = async (req, res) => {
 
     if (ad_set_id?.length) {
       db.query(`SELECT * FROM ads WHERE ad_set_id IN (?)`, [ad_set_id], (err, results) => {
-        if (err) return returnResponse(res, 500, { err });
+        if (err) return returnResponse(res, 400, { err });
         return returnResponse(res, 200, { data: results });
       });
       return;
     }
 
     db.query("SELECT * FROM ads", (err, results) => {
-      if (err) return returnResponse(res, 500, { err });
+      if (err) return returnResponse(res, 400, { err });
       return returnResponse(res, 200, { data: results });
     });
   } catch (error) {

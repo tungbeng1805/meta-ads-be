@@ -1,15 +1,10 @@
 const mysql = require("mysql2");
 
-const connection = mysql.createConnection({
+const connection = mysql.createPool({
   host: "localhost",
   user: "root",
-  password: "",
+  password: "admin@123",
   database: "meta_ads",
 });
 
-connection.connect(function (err, connection) {
-  if (err) console.log("Kết nối không thành công", err);
-  console.log("Connecting successfully");
-});
-
-module.exports = connection
+module.exports = connection;
